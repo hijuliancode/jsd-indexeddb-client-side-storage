@@ -40,6 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Crear los indices y campos de la base de datos, createIndex: 3 parametros, nombre, keypath y opciones
     objectStore.createIndex('mascota', 'mascota', { unique: false })
+    objectStore.createIndex('cliente', 'cliente', { unique: false })
+    objectStore.createIndex('telefono', 'telefono', { unique: false })
+    objectStore.createIndex('fecha', 'fecha', { unique: false })
+    objectStore.createIndex('hora', 'hora', { unique: false })
+    objectStore.createIndex('sintomas', 'sintomas', { unique: false })
+
+    console.log('Base de datos creada y lista!', db);
 
   }
 
