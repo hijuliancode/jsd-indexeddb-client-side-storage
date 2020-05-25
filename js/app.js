@@ -135,7 +135,25 @@ function mostrarCitas() {
 }
 
 function borrarCita(e) {
-  const citaID = e.target.parentElement.getAttribute('data-cita-id');
-  console.log(citaId);
-  
+  const citaID = Number(e.target.parentElement.getAttribute('data-cita-id'));
+
+  // En indexed DB utilizamos las transacciones
+  let transaction = DB.transaction(['citas'], 'readwrite')
+  let objectStore = transaction.objectStore('citas')
+  let peticion = objectStore.delete(citaID)
+
+  // Borrar también del DOM
+  transaction.oncomplete = () => {
+    e.target.parentElement.parentElement.removeChild(e.target.parentElement)
+    alert(`Se elimino la cita, con el ID: ${citaID}`)
+    if (!citasListado.firstChild) { // Cuando no hay registros/citas
+      heading.textContent = 'Agrega citas para comenzar'
+      let listado = document.createElement('p')
+      listado.classList.add('text-center')
+      listado.textContent = 'No hay registros'
+      citasListado.appendChild(listado)
+    } else {
+      heading.textContent = 'Administra tus citas'
+    }
+  }
 }
