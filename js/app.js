@@ -66,6 +66,21 @@ function agregarDatos(e) {
     hora : hora.value,
     sintomas : sintomas.value
   }
-
   console.log('Enviado, nueva cita', nuevaCita)
+
+  // En indexedDB se utilizan las transacciones
+  let transaction = DB.transaction(['citas'], 'readwrite') // 2 modos, readonly o readwrite
+  let objectStore = transaction.objectStore('citas') // ObjectStore me permite trabajar con la Db, aquí lo utilizamos para insertar los datos en la DB
+
+  let peticion = objectStore.add(nuevaCita)
+
+  peticion.onsuccess = () => {
+    form.reset()
+  }
+
+  transaction.oncomplete = () => {
+    console.log('Cita agregada =) ')
+  }
+  transaction.onerror = () => console.error('Hubo un error al agregar los datos')
+
 }

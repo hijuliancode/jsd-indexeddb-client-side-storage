@@ -1,1 +1,1 @@
-## Client Side Storage - IndexDB
+## Client Side Storage - IndexedDB
