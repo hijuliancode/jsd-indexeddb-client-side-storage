@@ -18,12 +18,11 @@ document.addEventListener('DOMContentLoaded', () => { // IndexDB requiere que el
   let crearDB = window.indexedDB.open('citas', 1)
 
   // Si hay un error enviarlo a la consola
-  crearDB.onerror = () => console.log('Hubo un error');
+  crearDB.onerror = () => console.error('Hubo un error');
 
   // Si todo esta bien, mostrar en consola y asignar la base de datos
   crearDB.onsuccess = () => {
     DB = crearDB.result
-    // console.log(DB)
     mostrarCitas()
   }
 
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => { // IndexDB requiere que el
     objectStore.createIndex('hora', 'hora', { unique: false })
     objectStore.createIndex('sintomas', 'sintomas', { unique: false })
 
-    console.log('Base de datos creada y lista!', db);
+    console.info('Base de datos creada y lista!', db);
 
   }
 
@@ -67,7 +66,6 @@ function agregarDatos(e) {
     hora : hora.value,
     sintomas : sintomas.value
   }
-  console.log('Enviado, nueva cita', nuevaCita)
 
   // En indexedDB se utilizan las transacciones
   let transaction = DB.transaction(['citas'], 'readwrite') // 2 modos, readonly o readwrite
@@ -80,7 +78,7 @@ function agregarDatos(e) {
   }
 
   transaction.oncomplete = () => {
-    console.log('Cita agregada =) ')
+    mostrarCitas()
   }
   transaction.onerror = () => console.error('Hubo un error al agregar los datos')
 
@@ -99,7 +97,6 @@ function mostrarCitas() {
   objectStore.openCursor().onsuccess = (e) => {
     // el cursor se va a indicar en el registro indicado para acceder a los datos
     let cursor = e.target.result;
-    console.log(cursor);
 
     if(cursor) {
       let citaHTML = document.createElement('li')
@@ -108,6 +105,11 @@ function mostrarCitas() {
 
       citaHTML.innerHTML = `
         <p><strong>Mascota:</strong> ${cursor.value.mascota}</p>
+        <p><strong>Cliente:</strong> ${cursor.value.cliente}</p>
+        <p><strong>Télefono:</strong> ${cursor.value.telefono}</p>
+        <p><strong>Fecha:</strong> ${cursor.value.fecha}</p>
+        <p><strong>Hora:</strong> ${cursor.value.hora}</p>
+        <p><strong>Sintomas:</strong> ${cursor.value.sintomas}</p>
       `;
 
       citasListado.appendChild(citaHTML)
