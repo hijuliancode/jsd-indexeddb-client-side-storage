@@ -11,8 +11,9 @@ const form = document.querySelector('#form'),
       citasListado = document.querySelector('#citas'),
       heading = document.querySelector('#administra')
 
-// IndexDB requiere que el DOM este listo
-document.addEventListener('DOMContentLoaded', () => {
+// Event Listeners
+
+document.addEventListener('DOMContentLoaded', () => { // IndexDB requiere que el DOM este listo
   // Crear la base de datos, nombre, versión, en la versión siempre deben haber números enteros
   let crearDB = window.indexedDB.open('citas', 1)
 
@@ -51,3 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 })
+
+form.addEventListener('submit', agregarDatos)
+
+// Agregar datos cuando el formulario se envía
+function agregarDatos(e) {
+  e.preventDefault()
+  const nuevaCita =  {
+    mascota : nombreMascota.value,
+    cliente : nombreCliente.value,
+    telefono : telefono.value,
+    fecha : fecha.value,
+    hora : hora.value,
+    sintomas : sintomas.value
+  }
+
+  console.log('Enviado, nueva cita', nuevaCita)
+}
