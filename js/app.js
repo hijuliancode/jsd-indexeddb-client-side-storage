@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => { // IndexDB requiere que el
   crearDB.onsuccess = () => {
     DB = crearDB.result
     // console.log(DB)
+    mostrarCitas()
   }
 
   // Este método solo corre una vez y es ideal para crear el Schema de la DB
@@ -83,4 +84,34 @@ function agregarDatos(e) {
   }
   transaction.onerror = () => console.error('Hubo un error al agregar los datos')
 
+}
+
+function mostrarCitas() {
+  // Limpiar citas anteriores
+  while(citasListado.firstChild) {
+    citasListado.removeChild(citasListado.firstChild)
+  }
+
+  // creamos un object store
+  let objectStore = DB.transaction('citas').objectStore('citas')
+  
+  // Esto retorna una petición
+  objectStore.openCursor().onsuccess = (e) => {
+    // el cursor se va a indicar en el registro indicado para acceder a los datos
+    let cursor = e.target.result;
+    console.log(cursor);
+
+    if(cursor) {
+      let citaHTML = document.createElement('li')
+      citaHTML.setAttribute('data-cita-id', cursor.value.key)
+      citaHTML.classList.add('list-group-item')
+
+      citaHTML.innerHTML = `
+        <p><strong>Mascota:</strong> ${cursor.value.mascota}</p>
+      `;
+
+      citasListado.appendChild(citaHTML)
+      cursor.continue()
+    }
+  }
 }
