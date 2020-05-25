@@ -100,7 +100,7 @@ function mostrarCitas() {
 
     if(cursor) {
       let citaHTML = document.createElement('li')
-      citaHTML.setAttribute('data-cita-id', cursor.value.key)
+      citaHTML.setAttribute('data-cita-id', cursor.key)
       citaHTML.classList.add('list-group-item')
 
       citaHTML.innerHTML = `
@@ -111,6 +111,12 @@ function mostrarCitas() {
         <p><strong>Hora:</strong> ${cursor.value.hora}</p>
         <p><strong>Sintomas:</strong> ${cursor.value.sintomas}</p>
       `;
+      // botón de borrar
+      const botonBorrar = document.createElement('button')
+      botonBorrar.classList.add('borrar', 'btn', 'btn-danger')
+      botonBorrar.innerHTML = '<span aria-hidden="true">x</span> Borrrar'
+      botonBorrar.onclick = borrarCita;
+      citaHTML.appendChild(botonBorrar)
 
       citasListado.appendChild(citaHTML)
       cursor.continue() // Coninua con la siguiente consulta
@@ -126,4 +132,10 @@ function mostrarCitas() {
       }
     }
   }
+}
+
+function borrarCita(e) {
+  const citaID = e.target.parentElement.getAttribute('data-cita-id');
+  console.log(citaId);
+  
 }
