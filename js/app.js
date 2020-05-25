@@ -113,7 +113,17 @@ function mostrarCitas() {
       `;
 
       citasListado.appendChild(citaHTML)
-      cursor.continue()
+      cursor.continue() // Coninua con la siguiente consulta
+    } else {
+      if (!citasListado.firstChild) { // Cuando no hay registros/citas
+        heading.textContent = 'Agrega citas para comenzar'
+        let listado = document.createElement('p')
+        listado.classList.add('text-center')
+        listado.textContent = 'No hay registros'
+        citasListado.appendChild(listado)
+      } else {
+        heading.textContent = 'Administra tus citas'
+      }
     }
   }
 }
